@@ -12,15 +12,25 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     dt = 0
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    updatable.add(player)
+    drawable.add(player)
     while True:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): # exit when window is clsoed
             if event.type == pygame.QUIT:
                 return
-        screen.fill("black")
-        #========================== new frame started
 
-        player.draw(screen)
+        #========================== new frame started
+        screen.fill("black") # background
+        
+        for item in updatable: # items update
+            item.update(dt)
+
+        for item in drawable: # items draw
+            item.draw(screen)
 
         #========================== refrash screen
         pygame.display.flip()
